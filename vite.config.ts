@@ -1,5 +1,6 @@
 import { resolve } from 'path';
 import { defineConfig } from 'vite';
+import typescript from '@rollup/plugin-typescript';
 import dts from 'vite-plugin-dts';
 
 export default defineConfig({
@@ -15,5 +16,11 @@ export default defineConfig({
             },
         },
     },
-    plugins: [dts()],
+    plugins: [
+        dts({
+            compilerOptions: {
+                rootDir: "src"
+            }
+        }),
+    ],
 });
