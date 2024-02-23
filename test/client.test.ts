@@ -51,5 +51,10 @@ describe('web client', () => {
         console.log(broadcast);
     });
 
+    test('get live broadcast preview image', async() => {
+        const previewImage = await apiClient.getLivePreviewImage('255733563');
+        console.log(previewImage);
+    })
+
 
 });
