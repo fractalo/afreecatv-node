@@ -18,7 +18,7 @@
     "test": "vitest"
   },
   "publishConfig": {
-    "registry": "http://localhost:4974"
+    "registry": "http://localhost:8973"
   },
   "files": [
     "dist/**/*",
