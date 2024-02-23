@@ -5,14 +5,14 @@ import { FileCookieStore } from 'tough-cookie-file-store';
 import { ProxyAgent, ProxyAgentOptions } from 'proxy-agent';
 import { HttpCookieAgent, HttpsCookieAgent, createCookieAgent } from 'http-cookie-agent/http';
 import type { User } from '../types.js';
-import { AuthApi } from './auth/AuthApi.js';
+import { AuthApi } from './authApi/AuthApi.js';
 import { createHash } from 'crypto';
 import { USERAGENT_WINDOWS_CHROME } from './constants.js';
 import winston from 'winston';
 import { MyApi } from './myApi/MyApi.js';
 import { BjApi } from './bjApi/BjApi.js';
 import { logAxiosError } from '../util/errorLoggers.js';
-import { LiveApi } from './live/LiveApi.js';
+import { LiveApi } from './liveApi/LiveApi.js';
 import { UnauthorizedError } from '../util/erros.js';
 
 
