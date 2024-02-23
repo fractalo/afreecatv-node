@@ -117,10 +117,11 @@ export class WebApiClient {
                     continue;
                 }
 
+                if (error instanceof Error) {
+                    this.logger.warn(error.message);
+                }
                 if (axios.isAxiosError(error)) {
                     logAxiosError(error);
-                } else if (error instanceof Error) {
-                    this.logger.warn(error.message);
                 }
                 throw error;
             }
