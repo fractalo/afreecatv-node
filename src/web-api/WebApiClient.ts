@@ -103,6 +103,7 @@ export class WebApiClient {
     private async callApi<T>(apiCaller: () => Promise<T>, config?: ApiCallConfig): Promise<T> {
         const maxRetries = config?.maxRetries ?? 1;
         const shouldAuth = config?.shouldAuth ?? true;
+        const isLoggingDisabled = config?.isLoggingDisabled ?? true;
 
         if (shouldAuth) {
             await this.authApi.waitForLogin();
@@ -115,6 +116,10 @@ export class WebApiClient {
                 if (error instanceof UnauthorizedError && tryCount < maxRetries) {
                     await this.login();
                     continue;
+                }
+
+                if (isLoggingDisabled) {
+                    throw error;
                 }
 
                 if (error instanceof Error) {
@@ -159,7 +164,7 @@ export class WebApiClient {
     async getLivePreviewImage(broadcastId: string) {
         return this.callApi(
             () => this.liveImageApi.getLivePreviewImage(broadcastId),
-            { shouldAuth: false, }
+            { shouldAuth: false, isLoggingDisabled: true }
         );
     }
 }
@@ -167,4 +172,5 @@ export class WebApiClient {
 interface ApiCallConfig {
     shouldAuth?: boolean;
     maxRetries?: number;
+    isLoggingDisabled?: boolean;
 }
