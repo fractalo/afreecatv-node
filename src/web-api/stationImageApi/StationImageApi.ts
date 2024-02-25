@@ -31,6 +31,7 @@ export class StationImageApi {
                 t: Date.now()
             },
             responseType: 'arraybuffer',
+            "axios-retry": { retries: 2 },
             signal: this.createAbortSignal(),
         });
 
