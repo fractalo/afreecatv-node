@@ -54,7 +54,12 @@ describe('web client', () => {
     test('get live broadcast preview image', async() => {
         const previewImage = await apiClient.getLivePreviewImage('255733563');
         console.log(previewImage);
-    })
+    });
+
+    test('get channel profile image', async() => {
+        const profileImage = await apiClient.getProfileImage('afsupport');
+        console.log(profileImage);
+    });
 
 
 });

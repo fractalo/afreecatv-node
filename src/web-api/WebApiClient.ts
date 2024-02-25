@@ -15,6 +15,7 @@ import { logAxiosError } from '../util/errorLoggers.js';
 import { LiveApi } from './liveApi/LiveApi.js';
 import { UnauthorizedError } from '../util/erros.js';
 import { LiveImageApi } from './liveImageApi/LiveImageApi.js';
+import { StationImageApi } from './stationImageApi/StationImageApi.js';
 
 
 const ProxyCookieAgent = createCookieAgent(ProxyAgent);
@@ -38,6 +39,7 @@ export class WebApiClient {
     private bjApi: BjApi;
     private liveApi: LiveApi;
     private liveImageApi: LiveImageApi;
+    private stationImageApi: StationImageApi;
 
     constructor(config: WebApiClientConfig) {
         const loggerOptions = config.loggerOptions ?? {
@@ -78,6 +80,7 @@ export class WebApiClient {
         this.bjApi = new BjApi(this.axiosInstance, this.logger);
         this.liveApi = new LiveApi(this.axiosInstance, this.logger, config.apiTimeoutMs);
         this.liveImageApi = new LiveImageApi(this.axiosInstance, this.logger, config.apiTimeoutMs);
+        this.stationImageApi = new StationImageApi(this.axiosInstance, this.logger, config.apiTimeoutMs);
 
         this.login();
     }
@@ -165,6 +168,13 @@ export class WebApiClient {
         return this.callApi(
             () => this.liveImageApi.getLivePreviewImage(broadcastId),
             { shouldAuth: false, isLoggingDisabled: true }
+        );
+    }
+
+    async getProfileImage(channelId: string) {
+        return this.callApi(
+            () => this.stationImageApi.getProfileImage(channelId),
+            { shouldAuth: false, }
         );
     }
 }
