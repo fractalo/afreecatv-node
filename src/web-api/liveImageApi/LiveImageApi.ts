@@ -3,6 +3,7 @@ import winston from "winston";
 import { LIVEIMG_BASE_URL } from "../constants.js";
 
 export interface LivePreviewImage {
+    broadcastId: string;
     url: string;
     data: Buffer;
 }
@@ -38,7 +39,7 @@ export class LiveImageApi {
         if (!Buffer.isBuffer(data)) {
             throw new Error('response data is not a buffer');
         }
-        return { url, data };
+        return { broadcastId, url, data };
     }
 
     private createAbortSignal() {
