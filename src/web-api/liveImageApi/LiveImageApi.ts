@@ -24,12 +24,14 @@ export class LiveImageApi {
     }
 
     async getLivePreviewImage(broadcastId: string): Promise<LivePreviewImage> {
-        const url = this.createLivePreviewImageUrl(broadcastId);
+        const baseUrl = this.createLivePreviewImageUrl(broadcastId);
 
-        const response = await this.client.get<unknown>(url, {
-            params: {
-                t: Date.now()
-            },
+        const params = {
+            t: Date.now()
+        };
+
+        const response = await this.client.get<unknown>(baseUrl, {
+            params,
             responseType: 'arraybuffer',
             signal: this.createAbortSignal(),
         });
@@ -39,7 +41,17 @@ export class LiveImageApi {
         if (!Buffer.isBuffer(data)) {
             throw new Error('response data is not a buffer');
         }
-        return { broadcastId, url, data };
+
+        const url = new URL(baseUrl);
+        Object.entries(params).forEach(([key, value]) => {
+            url.searchParams.append(key, value.toString());
+        });
+
+        return {
+            broadcastId, 
+            url: url.toString(), 
+            data 
+        };
     }
 
     private createAbortSignal() {

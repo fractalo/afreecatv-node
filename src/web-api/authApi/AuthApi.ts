@@ -25,12 +25,12 @@ export class AuthApi {
     async login(user: User) {
         if (!this.loginPromise) {
             this.loginPromise = this._login(user)
-                    .then(() => {
-                        this.loginPromise = null;
-                    })
                     .catch((error: unknown) => {
                         this.logger.warn('failed to login.', 'Error: ', error);
-                    });
+                    })
+                    .finally(() => {
+                        this.loginPromise = null;
+                    })
         }
         return this.loginPromise;
     }
