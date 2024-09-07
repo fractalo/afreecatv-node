@@ -1,9 +1,22 @@
+import dayjs from "dayjs";
 import { toNumberSafe, toStringArraySafe, toStringSafe } from "../../util/converters.js";
 import { BroadcastInfo } from "./broadcastInfo.js";
+import { TIMEZONE_SEOUL } from "../constants.js";
 
 export interface FavoriteBroadcastInfo extends BroadcastInfo {
     stationName: string;
+    broadcastStartedAt: number;
 }
+
+const toBroadcastStartTimestamp = (value: unknown) => {
+    const datetime = toStringSafe(value);
+    if (!datetime) return;
+
+    const date = dayjs(datetime, 'YYYY-MM-DD HH:mm', true).tz(TIMEZONE_SEOUL, true);
+    if (date.isValid()) {
+        return date.valueOf();
+    }
+};
 
 export const toFavoriteBroadcastInfo = (record: Record<string, unknown>): Partial<FavoriteBroadcastInfo> => {
     const {
@@ -19,6 +32,7 @@ export const toFavoriteBroadcastInfo = (record: Record<string, unknown>): Partia
         is_password,
         broad_grade,
         visit_broad_type,
+        broad_start,
     } = record;
 
     const requiresPassword = toStringSafe(is_password) ? toStringSafe(is_password) === 'Y' : undefined;
@@ -37,5 +51,6 @@ export const toFavoriteBroadcastInfo = (record: Record<string, unknown>): Partia
         requiresPassword,
         ageLimit: toNumberSafe(broad_grade),
         isVisitAllowed,
+        broadcastStartedAt: toBroadcastStartTimestamp(broad_start),
     };
 };
